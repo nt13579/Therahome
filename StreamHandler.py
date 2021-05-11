@@ -113,7 +113,7 @@ class StreamHandler:
 
     def beginCapture(self, config, maxFrames = None, labelVideo = True, shuffle = 0, vidOut = False,
                     fps = 30, resizeFactor = None, outputDir = None, capStreamFps = False,
-                    printFPS = False, savePose=True, saveMeta=True, scorer = None, filetype = 'h5',
+                    printFPS = False, savePose=False, saveMeta=False, scorer = None, filetype = 'h5',
                     display=True, threshold = .1, num_outputs=None, predictionToPlot = None):
 
         """Short Summary
@@ -158,6 +158,7 @@ class StreamHandler:
         if labelVideo:
             sess, inputs, outputs, dlc_cfg = self.initializeDLC(config=config, shuffle=shuffle)
 
+
         for i, stream in enumerate(self.camIdx):
             if not isinstance(stream, (int, str)):
                 raise Exception('Each individual stream must be an int or string')
@@ -177,10 +178,16 @@ class StreamHandler:
 
         self.curFrame = self.frame
 
+        '''
         if maxFrames == None:
             self.maxFrames = self.streams[0].get(cv2.CAP_PROP_FRAME_COUNT) - 1
         else:
             self.maxFrames = maxFrames
+            '''
+        if maxFrames != None:
+            self.maxFrames = maxFrames
+        else:
+            self.maxFrames =None
 
         #Ensures they are both ints
         if not resizeFactor == None:
@@ -210,6 +217,7 @@ class StreamHandler:
         self.fpsArr = []
 
         while True:
+
             if (not self.maxFrames == None and self.curIdx >= self.maxFrames) or  cv2.waitKey(1) == 27:
                 print("###STOPPING###")
                 self.stopped = True
