@@ -1,0 +1,181 @@
+2021-05-12 23:28:58 Config:
+{'all_joints': [[0],
+                [1],
+                [2],
+                [3],
+                [4],
+                [5],
+                [6],
+                [7],
+                [8],
+                [9],
+                [10],
+                [11],
+                [12],
+                [13],
+                [14],
+                [15],
+                [16],
+                [17],
+                [18],
+                [19],
+                [20],
+                [21],
+                [22],
+                [23],
+                [24]],
+ 'all_joints_names': ['R',
+                      'U',
+                      'MH',
+                      '2K',
+                      '3K',
+                      '4K',
+                      '5K',
+                      '1L',
+                      '2L',
+                      '3L',
+                      '4L',
+                      '5L',
+                      '1M',
+                      '2M',
+                      '3M',
+                      '4M',
+                      '5M',
+                      '1U',
+                      '2U',
+                      '3U',
+                      '4U',
+                      '5U',
+                      'S',
+                      'MP',
+                      'E'],
+ 'batch_size': 1,
+ 'bottomheight': 400,
+ 'crop': True,
+ 'crop_pad': 0,
+ 'cropratio': 0.4,
+ 'dataset': 'training-datasets/iteration-0/UnaugmentedDataSet_TherahomeMay12/Therahome_Nick95shuffle1.mat',
+ 'dataset_type': 'default',
+ 'deterministic': False,
+ 'display_iters': 1000,
+ 'fg_fraction': 0.25,
+ 'global_scale': 0.8,
+ 'init_weights': '/home/nickt/anaconda3/envs/dlc/lib/python3.6/site-packages/deeplabcut/pose_estimation_tensorflow/models/pretrained/mobilenet_v2_1.0_224.ckpt',
+ 'intermediate_supervision': False,
+ 'intermediate_supervision_layer': 12,
+ 'leftwidth': 400,
+ 'location_refinement': True,
+ 'locref_huber_loss': True,
+ 'locref_loss_weight': 0.05,
+ 'locref_stdev': 7.2801,
+ 'log_dir': 'log',
+ 'max_input_size': 1500,
+ 'mean_pixel': [123.68, 116.779, 103.939],
+ 'metadataset': 'training-datasets/iteration-0/UnaugmentedDataSet_TherahomeMay12/Documentation_data-Therahome_95shuffle1.pickle',
+ 'min_input_size': 64,
+ 'minsize': 100,
+ 'mirror': False,
+ 'multi_step': [[0.005, 10000],
+                [0.02, 430000],
+                [0.002, 730000],
+                [0.001, 1030000]],
+ 'net_type': 'mobilenet_v2_1.0',
+ 'num_joints': 25,
+ 'optimizer': 'sgd',
+ 'pos_dist_thresh': 17,
+ 'project_path': '/home/nickt/Therahome/Therahome-Nick-2021-05-12',
+ 'regularize': False,
+ 'rightwidth': 400,
+ 'save_iters': 50000,
+ 'scale_jitter_lo': 0.5,
+ 'scale_jitter_up': 1.25,
+ 'scoremap_dir': 'test',
+ 'shuffle': True,
+ 'snapshot_prefix': '/home/nickt/Therahome/Therahome-Nick-2021-05-12/dlc-models/iteration-0/TherahomeMay12-trainset95shuffle1/train/snapshot',
+ 'stride': 8.0,
+ 'topheight': 400,
+ 'weigh_negatives': False,
+ 'weigh_only_present_joints': False,
+ 'weigh_part_predictions': False,
+ 'weight_decay': 0.0001}
+2021-05-12 23:55:18 iteration: 10000 loss: 0.0190 lr: 0.005
+2021-05-13 00:11:19 iteration: 20000 loss: 0.0064 lr: 0.02
+2021-05-13 00:25:28 iteration: 30000 loss: 0.0043 lr: 0.02
+2021-05-13 00:38:05 iteration: 40000 loss: 0.0035 lr: 0.02
+2021-05-13 00:49:36 iteration: 50000 loss: 0.0030 lr: 0.02
+2021-05-13 01:00:22 iteration: 60000 loss: 0.0027 lr: 0.02
+2021-05-13 01:10:34 iteration: 70000 loss: 0.0024 lr: 0.02
+2021-05-13 01:20:08 iteration: 80000 loss: 0.0022 lr: 0.02
+2021-05-13 01:29:19 iteration: 90000 loss: 0.0021 lr: 0.02
+2021-05-13 01:38:15 iteration: 100000 loss: 0.0020 lr: 0.02
+2021-05-13 01:46:36 iteration: 110000 loss: 0.0018 lr: 0.02
+2021-05-13 01:54:53 iteration: 120000 loss: 0.0018 lr: 0.02
+2021-05-13 02:02:54 iteration: 130000 loss: 0.0016 lr: 0.02
+2021-05-13 02:10:56 iteration: 140000 loss: 0.0016 lr: 0.02
+2021-05-13 02:18:39 iteration: 150000 loss: 0.0016 lr: 0.02
+2021-05-13 02:26:20 iteration: 160000 loss: 0.0015 lr: 0.02
+2021-05-13 02:33:53 iteration: 170000 loss: 0.0014 lr: 0.02
+2021-05-13 02:41:16 iteration: 180000 loss: 0.0014 lr: 0.02
+2021-05-13 02:48:27 iteration: 190000 loss: 0.0013 lr: 0.02
+2021-05-13 02:55:36 iteration: 200000 loss: 0.0013 lr: 0.02
+2021-05-13 03:02:42 iteration: 210000 loss: 0.0013 lr: 0.02
+2021-05-13 03:09:42 iteration: 220000 loss: 0.0013 lr: 0.02
+2021-05-13 03:16:31 iteration: 230000 loss: 0.0012 lr: 0.02
+2021-05-13 03:23:23 iteration: 240000 loss: 0.0012 lr: 0.02
+2021-05-13 03:30:09 iteration: 250000 loss: 0.0012 lr: 0.02
+2021-05-13 03:36:48 iteration: 260000 loss: 0.0011 lr: 0.02
+2021-05-13 03:43:21 iteration: 270000 loss: 0.0011 lr: 0.02
+2021-05-13 03:49:55 iteration: 280000 loss: 0.0011 lr: 0.02
+2021-05-13 03:56:29 iteration: 290000 loss: 0.0011 lr: 0.02
+2021-05-13 04:03:03 iteration: 300000 loss: 0.0011 lr: 0.02
+2021-05-13 04:09:29 iteration: 310000 loss: 0.0010 lr: 0.02
+2021-05-13 04:15:59 iteration: 320000 loss: 0.0010 lr: 0.02
+2021-05-13 04:22:28 iteration: 330000 loss: 0.0010 lr: 0.02
+2021-05-13 04:28:51 iteration: 340000 loss: 0.0010 lr: 0.02
+2021-05-13 04:35:17 iteration: 350000 loss: 0.0010 lr: 0.02
+2021-05-13 04:41:37 iteration: 360000 loss: 0.0010 lr: 0.02
+2021-05-13 04:48:00 iteration: 370000 loss: 0.0010 lr: 0.02
+2021-05-13 04:54:16 iteration: 380000 loss: 0.0009 lr: 0.02
+2021-05-13 05:00:31 iteration: 390000 loss: 0.0009 lr: 0.02
+2021-05-13 05:06:42 iteration: 400000 loss: 0.0009 lr: 0.02
+2021-05-13 05:12:55 iteration: 410000 loss: 0.0009 lr: 0.02
+2021-05-13 05:19:05 iteration: 420000 loss: 0.0009 lr: 0.02
+2021-05-13 05:25:15 iteration: 430000 loss: 0.0009 lr: 0.02
+2021-05-13 05:31:24 iteration: 440000 loss: 0.0008 lr: 0.002
+2021-05-13 05:37:26 iteration: 450000 loss: 0.0008 lr: 0.002
+2021-05-13 05:43:34 iteration: 460000 loss: 0.0008 lr: 0.002
+2021-05-13 05:49:37 iteration: 470000 loss: 0.0007 lr: 0.002
+2021-05-13 05:55:45 iteration: 480000 loss: 0.0007 lr: 0.002
+2021-05-13 06:01:46 iteration: 490000 loss: 0.0007 lr: 0.002
+2021-05-13 06:07:51 iteration: 500000 loss: 0.0007 lr: 0.002
+2021-05-13 06:13:51 iteration: 510000 loss: 0.0007 lr: 0.002
+2021-05-13 06:19:49 iteration: 520000 loss: 0.0007 lr: 0.002
+2021-05-13 06:25:48 iteration: 530000 loss: 0.0007 lr: 0.002
+2021-05-13 06:31:52 iteration: 540000 loss: 0.0007 lr: 0.002
+2021-05-13 06:37:49 iteration: 550000 loss: 0.0007 lr: 0.002
+2021-05-13 06:43:47 iteration: 560000 loss: 0.0007 lr: 0.002
+2021-05-13 06:49:47 iteration: 570000 loss: 0.0007 lr: 0.002
+2021-05-13 06:55:43 iteration: 580000 loss: 0.0007 lr: 0.002
+2021-05-13 07:01:40 iteration: 590000 loss: 0.0007 lr: 0.002
+2021-05-13 07:07:33 iteration: 600000 loss: 0.0007 lr: 0.002
+2021-05-13 07:13:30 iteration: 610000 loss: 0.0007 lr: 0.002
+2021-05-13 07:19:24 iteration: 620000 loss: 0.0007 lr: 0.002
+2021-05-13 07:25:18 iteration: 630000 loss: 0.0007 lr: 0.002
+2021-05-13 07:31:09 iteration: 640000 loss: 0.0007 lr: 0.002
+2021-05-13 07:37:05 iteration: 650000 loss: 0.0007 lr: 0.002
+2021-05-13 07:42:53 iteration: 660000 loss: 0.0007 lr: 0.002
+2021-05-13 07:48:45 iteration: 670000 loss: 0.0007 lr: 0.002
+2021-05-13 07:54:38 iteration: 680000 loss: 0.0007 lr: 0.002
+2021-05-13 08:00:28 iteration: 690000 loss: 0.0007 lr: 0.002
+2021-05-13 08:06:19 iteration: 700000 loss: 0.0007 lr: 0.002
+2021-05-13 08:12:10 iteration: 710000 loss: 0.0007 lr: 0.002
+2021-05-13 08:18:00 iteration: 720000 loss: 0.0007 lr: 0.002
+2021-05-13 08:23:48 iteration: 730000 loss: 0.0007 lr: 0.002
+2021-05-13 08:29:36 iteration: 740000 loss: 0.0007 lr: 0.001
+2021-05-13 08:35:23 iteration: 750000 loss: 0.0007 lr: 0.001
+2021-05-13 08:41:10 iteration: 760000 loss: 0.0007 lr: 0.001
+2021-05-13 08:46:58 iteration: 770000 loss: 0.0007 lr: 0.001
+2021-05-13 08:52:46 iteration: 780000 loss: 0.0007 lr: 0.001
+2021-05-13 08:58:34 iteration: 790000 loss: 0.0007 lr: 0.001
+2021-05-13 09:04:21 iteration: 800000 loss: 0.0007 lr: 0.001
+2021-05-13 09:10:07 iteration: 810000 loss: 0.0007 lr: 0.001

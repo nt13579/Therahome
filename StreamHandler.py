@@ -26,6 +26,7 @@ import os.path
 import argparse
 import tensorflow as tf
 import pdb
+import pickle
 
 from datetime import datetime
 from deeplabcut.pose_estimation_tensorflow.nnet import predict
@@ -42,7 +43,7 @@ from collections import OrderedDict as ordDict
 
 
 class StreamHandler:
-    def __init__(self, camIdx, dropFrames = False):
+    def __init__(self, camIdx, dropFrames = False, classify_behavior = False, behavior_model_path = None):
         """Short summary
 
         Initializes stream handler object
@@ -61,6 +62,15 @@ class StreamHandler:
             essentially subsample the video stream at based on the processing rate if that rate is
             below the framerate of the stream.
         """
+
+
+        self.classify_behavior = classify_behavior
+
+        if classify_behavior:
+            if behavior_model_path == None:
+                raise Exception("No behavior model path defined")
+            else:
+                self.behaviorModel =  pickle.load(open(behavior_model_path, 'rb'))
 
         #Storage structure for frames, Thinking can sequentially add frames for multiple cameras
         self.queue = Queue()    #Temporary frame storage, only used for retrieval
@@ -103,6 +113,7 @@ class StreamHandler:
             self.streamCount = len(camIdx) #number of streams
             self.multiple = self.streamCount > 1
             self.camIdx = camIdx
+            self.behaviors = []
 
             #self.updateMeta()
 
@@ -164,6 +175,7 @@ class StreamHandler:
                 raise Exception('Each individual stream must be an int or string')
             self.streams.append(cv2.VideoCapture(stream))
             self.poseData.append([]) #initalizes empty lists for all pose data
+            self.behaviors.append([])
             (self.grabbed, frame) = self.streams[i].read()
             self.frame.append(frame)
             if self.height == None:
@@ -246,8 +258,19 @@ class StreamHandler:
 
                 #PROCESSING
                 pose = self.analyzeFrames(frame, sess, inputs, outputs, dlc_cfg, num_outputs=num_outputs)
+                behaviors = []
                 for i in range(self.streamCount):
-                    self.poseData[i].append(poses[i])
+                    self.poseData[i].append(pose[i])
+                    if self.classify_behavior:
+                        behavior = self.behaviorModel.predict(pose[i].reshape(1,-1))
+                        behaviors.append(behavior)
+                        self.behaviors[i].append(behavior)
+
+
+                if self.classify_behavior:
+                    sys.stdout.write('\r')
+                    sys.stdout.write(str(behaviors))
+                    sys.stdout.flush()
 
                 procTime =  time.time() - self.startTime
                 self.meta['Time Processed'][curIdx] = procTime
@@ -354,6 +377,7 @@ class StreamHandler:
                     fileName = outputDir + 'Cam{}_PoseEstimationData_{}.csv'.format(i, str(datetime.today().now())[:-7])
                     df.to_csv(fileName, key='df')
         return poseDataFrames
+
 
 #HELPER METHODS
 ####################################################################################################
@@ -502,6 +526,7 @@ class StreamHandler:
 
         modelfolder=os.path.join(cfg["project_path"],str(auxiliaryfunctions.GetModelFolder(trainFraction,shuffle,cfg)))
         path_test_config = Path(modelfolder) / 'test' / 'pose_cfg.yaml'
+        print(path_test_config)
         try:
             dlc_cfg = load_config(str(path_test_config))
         except FileNotFoundError:

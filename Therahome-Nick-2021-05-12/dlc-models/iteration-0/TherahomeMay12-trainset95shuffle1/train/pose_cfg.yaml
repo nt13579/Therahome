@@ -1,0 +1,91 @@
+all_joints:
+- - 0
+- - 1
+- - 2
+- - 3
+- - 4
+- - 5
+- - 6
+- - 7
+- - 8
+- - 9
+- - 10
+- - 11
+- - 12
+- - 13
+- - 14
+- - 15
+- - 16
+- - 17
+- - 18
+- - 19
+- - 20
+- - 21
+- - 22
+- - 23
+- - 24
+all_joints_names:
+- R
+- U
+- MH
+- 2K
+- 3K
+- 4K
+- 5K
+- 1L
+- 2L
+- 3L
+- 4L
+- 5L
+- 1M
+- 2M
+- 3M
+- 4M
+- 5M
+- 1U
+- 2U
+- 3U
+- 4U
+- 5U
+- S
+- MP
+- E
+batch_size: 1
+bottomheight: 400
+crop: true
+cropratio: 0.4
+dataset: training-datasets/iteration-0/UnaugmentedDataSet_TherahomeMay12/Therahome_Nick95shuffle1.mat
+dataset_type: default
+display_iters: 1000
+global_scale: 0.8
+init_weights: /home/nickt/anaconda3/envs/dlc/lib/python3.6/site-packages/deeplabcut/pose_estimation_tensorflow/models/pretrained/mobilenet_v2_1.0_224.ckpt
+intermediate_supervision: false
+intermediate_supervision_layer: 12
+leftwidth: 400
+location_refinement: true
+locref_huber_loss: true
+locref_loss_weight: 0.05
+locref_stdev: 7.2801
+max_input_size: 1500
+metadataset: training-datasets/iteration-0/UnaugmentedDataSet_TherahomeMay12/Documentation_data-Therahome_95shuffle1.pickle
+min_input_size: 64
+minsize: 100
+mirror: false
+multi_step:
+- - 0.005
+  - 10000
+- - 0.02
+  - 430000
+- - 0.002
+  - 730000
+- - 0.001
+  - 1030000
+net_type: mobilenet_v2_1.0
+num_joints: 25
+pos_dist_thresh: 17
+project_path: /home/nickt/Therahome/Therahome-Nick-2021-05-12
+rightwidth: 400
+save_iters: 50000
+scale_jitter_lo: 0.5
+scale_jitter_up: 1.25
+topheight: 400
