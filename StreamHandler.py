@@ -27,6 +27,7 @@ import argparse
 import tensorflow as tf
 import pdb
 import pickle
+import pyautogui as pa
 
 from datetime import datetime
 from deeplabcut.pose_estimation_tensorflow.nnet import predict
@@ -39,11 +40,13 @@ from skimage.util import img_as_ubyte
 from threading import Thread
 from queue import Queue
 from collections import OrderedDict as ordDict
+from pynput import keyboard as kb
 
 
 
 class StreamHandler:
-    def __init__(self, camIdx, dropFrames = False, classify_behavior = False, behavior_model_path = None):
+    def __init__(self, camIdx, dropFrames = False, classify_behavior = False, behavior_model_path = None,
+                implement_control = False):
         """Short summary
 
         Initializes stream handler object
@@ -65,6 +68,7 @@ class StreamHandler:
 
 
         self.classify_behavior = classify_behavior
+        self.implement_control = implement_control
 
         if classify_behavior:
             if behavior_model_path == None:
@@ -125,7 +129,7 @@ class StreamHandler:
     def beginCapture(self, config, maxFrames = None, labelVideo = True, shuffle = 0, vidOut = False,
                     fps = 30, resizeFactor = None, outputDir = None, capStreamFps = False,
                     printFPS = False, savePose=False, saveMeta=False, scorer = None, filetype = 'h5',
-                    display=True, threshold = .1, num_outputs=None, predictionToPlot = None):
+                    display=True, threshold = .9, num_outputs=None, predictionToPlot = None):
 
         """Short Summary
         Parameters
@@ -165,6 +169,7 @@ class StreamHandler:
             raise Error("Not valid prediction selections")
 
         self.num_outputs = num_outputs
+        self.filtered_behaviors = []
 
         if labelVideo:
             sess, inputs, outputs, dlc_cfg = self.initializeDLC(config=config, shuffle=shuffle)
@@ -227,11 +232,51 @@ class StreamHandler:
         loopcount = 0
         timeArr = np.zeros((100))
         self.fpsArr = []
+        key_press_time = None
+        manual_stop = False
+
+        if True:
+
+            def on_release(key):
+                if (key == kb.Key.shift or key == kb.Key.shift_r or key == kb.Key.shift_l):
+                    self.presses += 1
+                    if self.presses >= 3:
+                        print('SHIFTS:{}'.format(self.presses))
+                        pa.keyDown('esc')
+                        pa.keyUp('esc')
+                if key == kb.Key.esc:
+                    print("Keyboard listening stopped.")
+                    # Stop listener
+                    stop = True
+                    pa.keyUp('left')
+                    pa.keyUp('right')
+                    pa.keyUp('up')
+                    self.stopped = True
+                    self.t.join() #I think this stops the thread properly. Need to look into more but it works
+                    for stream in self.streams:
+                        stream.release()
+                    if vidOut:
+                        for writer in videoWriters:
+                            writer.release()
+                    cv2.destroyAllWindows()
+
+
+
+                    return False
+
+            listener = kb.Listener(on_release=on_release)
+            listener.start()
+
+        stop = False
 
         while True:
-
-            if (not self.maxFrames == None and self.curIdx >= self.maxFrames) or  cv2.waitKey(1) == 27:
+            if cv2.waitKey(1) == 27:
+                stop = True
+            if (not self.maxFrames == None and self.curIdx >= self.maxFrames) or stop:
                 print("###STOPPING###")
+                pa.keyUp('left')
+                pa.keyUp('right')
+                pa.keyUp('up')
                 self.stopped = True
                 self.t.join() #I think this stops the thread properly. Need to look into more but it works
                 for stream in self.streams:
@@ -240,11 +285,12 @@ class StreamHandler:
                     for writer in videoWriters:
                         writer.release()
                 cv2.destroyAllWindows()
+
                 break
 
             timeIdx = loopcount % 100 #Make a constant so it is clear this is used in fps calculations
             #READING
-            curIdx = self.curIdx #ensures all idx are consistent for current loop iterations
+            curIdx = max(0, self.curIdx-1)#ensures all idx are consistent for current loop iterations
             frame = self.read()
             #print(self.frameCounter, curIdx, len(self.meta['Frame Read']))
             self.meta['Frame Read'][curIdx] = True #might need to move meta update into main while loop
@@ -263,14 +309,48 @@ class StreamHandler:
                     self.poseData[i].append(pose[i])
                     if self.classify_behavior:
                         behavior = self.behaviorModel.predict(pose[i].reshape(1,-1))
+                        behavior = behavior[0]
                         behaviors.append(behavior)
                         self.behaviors[i].append(behavior)
 
+                key_press_delay = .03
+                behavior_lag = 3
+                self.presses = 0
+                exit_presses = 3
+                behavior_counts = {}
 
-                if self.classify_behavior:
+                if self.classify_behavior and self.curIdx > behavior_lag:
+
+                    past_behaviors = np.asarray(self.behaviors[0][-behavior_lag:])
+                    behavior_codes = [0,1,2]
+                    max_count = -1
+                    for code in behavior_codes:
+                        count = sum(past_behaviors == code)
+                        if count > max_count:
+                            behavior = code
+                            max_count = count
+                    self.filtered_behaviors.append(behavior)
+
                     sys.stdout.write('\r')
-                    sys.stdout.write(str(behaviors))
+                    sys.stdout.write(str('behavior'))
+                    sys.stdout.write(str(behavior))
                     sys.stdout.flush()
+
+                    if self.implement_control:
+                        pa.keyDown('up')
+                        if key_press_time == None or (time.time() - key_press_time) >= key_press_delay:
+                            if behavior == 0:
+                                pa.keyUp('left')
+                                pa.keyUp('right')
+                            elif behavior == 1:
+                                pa.keyUp('right')
+                                pa.keyDown('left')
+                            elif behavior == 2:
+                                pa.keyUp('left')
+                                pa.keyDown('right')
+
+                            key_press_time = time.time()
+
 
                 procTime =  time.time() - self.startTime
                 self.meta['Time Processed'][curIdx] = procTime

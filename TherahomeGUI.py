@@ -1,17 +1,28 @@
+#!/usr/bin/env python
+
 import tkinter as tk
 import os
 from bash import bash
 import time
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-# import StreamHandler as st
-# from selenium.webdriver.du.options import Options
-# import webbrowser as wb
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import StreamHandler as st
+from selenium.webdriver.chrome.options import Options
+import webbrowser as wb
+import pyautogui
+
+train_vid_dir = '/home/nickt/Therahome/Videos/Training/'
+main_dir = '/home/nickt/Therahome/'
+pcf = '/home/nickt/Therahome/Therahome-Nick-2021-05-12/config.yaml'
+
+os.chdir(main_dir)
+vid_dir = os.path.join(main_dir, 'Videos/Training')
 
 # Create a window object
 window = tk.Tk()
 window.configure(bg="#6B7860")
 
+window.geometry("+120+120")
 # Create an event handler
 def handle_keypress(event):
     print("The button was clicked!")
@@ -19,28 +30,29 @@ def handle_keypress(event):
 def handle_click(event):
     print("The button was clicked!")
 
-def open_game(event
-    #, version = 'selenium'
-    ):
+def open_game(event, version = 'selenium'):
     print("opening game")
-    # if version == 'local':
-    #    print('Opening')
-    #    bash('/home/nickt/MSC2-Linux/MSC2.x86_64 &')
-    #    bash('wmctrl -r Madalin Stunt Cars 2 -e 0,2700,0,640,480')
-    #    print('resizing')
-    # elif version == 'selenium':
-    #    chrome_options = Options()
-    #    chrome_options.add_experimental_option("detach", True)
-    #    driver = webdriver.Chrome(options=chrome_options)
-    #    driver.get('https://madalinstuntcars2.io/%27')
-    #    driver.set_window_position(3220, 0)
+    if version == 'local':
+        print('Opening')
+        bash('/home/nickt/MSC2-Linux/MSC2.x86_64 &')
+        bash('wmctrl -r Madalin Stunt Cars 2 -e 0,2700,0,640,480')
+        print('resizing')
+    elif version == 'selenium':
+        chrome_options = Options()
+        chrome_options.add_experimental_option("detach", True)
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.get('https://madalinstuntcars2.io/')
+        screen_size = pyautogui.size()
+        x_coord = screen_size[0] - 900
+        driver.set_window_position(x_coord, 0)
+
 
 def start_recording(event):
     print('recording')
-    # stream = st.StreamHandler([0], classify_behavior=True, dropFrames = True, 
-    #                  behavior_model_path=os.path.join(main_dir, 'SVM_BasicMovement.sav'),
-    #                  implement_control=True)
-    # stream.beginCapture(pcf ,labelVideo=True, shuffle =1)
+    stream = st.StreamHandler([0], classify_behavior=True, dropFrames = True, 
+                     behavior_model_path=os.path.join(main_dir, 'SVM_BasicMovement.sav'),
+                     implement_control=True)
+    stream.beginCapture(pcf ,labelVideo=True, shuffle =1)
 
 window.rowconfigure(0, weight=1, minsize=250)
 window.rowconfigure(1, weight=1, minsize=50)
@@ -51,7 +63,7 @@ logo_frame = tk.Frame(window, bg="#A4BCA4")
 logo_frame.grid(row=0, columnspan=4, padx=10, pady=10)
 
 # adjust the path for your system
-therahome_logo = tk.PhotoImage(file='/home/jtstever/Downloads/Therahome.png')
+therahome_logo = tk.PhotoImage(file='/home/nickt/Therahome/logo.png')
 logo = tk.Label(logo_frame, image=therahome_logo)
 logo.pack()
 
